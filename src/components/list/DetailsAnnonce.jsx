@@ -7,10 +7,10 @@ function DetailsAnnonce({annonce}){
 
     const navigate = useNavigate();
 
-    function checkToken(){
+    function checkToken(idSender){
         const token = localStorage.getItem("token");
         console.log("token ", token);
-        if(token) navigate("/notification");
+        if(token) navigate("/notification/"+idSender);
         else{
             navigate("/login");
         }
@@ -23,19 +23,17 @@ function DetailsAnnonce({annonce}){
                     <div class="row g-5 align-items-center">
                         <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                             <div class="about-img position-relative overflow-hidden p-5 pe-0">
-                                <img alt="" class="img-fluid w-100" src={carousel/*annonce.photoSet[0] && "data:image/png;base64,"+annonce?.photoSet[0].text*/} />
+                                <img alt="" class="img-fluid w-100" src={annonce.photoSet[0] && "data:image/png;base64,"+annonce?.photoSet[0].fieldBytes} />
                             </div>
                         </div>
                         <div class="col-lg-2 wow fadeIn" data-wow-delay="0.1s">
-                            <div class="about-img position-relative overflow-hidden p-5 pe-0">
-                                <img alt="" class="img-fluid w-100" src={carousel/*annonce.photoSet[0] && "data:image/png;base64,"+annonce?.photoSet[0].text*/} />
-                            </div>
-                            <div class="about-img position-relative overflow-hidden p-5 pe-0">
-                                <img alt="" class="img-fluid w-100" src={carousel/*annonce.photoSet[0] && "data:image/png;base64,"+annonce?.photoSet[0].text*/} />
-                            </div>
-                            <div class="about-img position-relative overflow-hidden p-5 pe-0">
-                                <img alt="" class="img-fluid w-100" src={carousel/*annonce.photoSet[0] && "data:image/png;base64,"+annonce?.photoSet[0].text*/} />
-                            </div>
+                            {annonce.photoSet &&
+                                annonce.photoSet.map(photo =>(
+                                    <div class="about-img position-relative overflow-hidden p-5 pe-0">
+                                        <img alt="" class="img-fluid w-100" src={"data:image/png;base64,"+photo.fieldBytes} />
+                                    </div>
+                                ))
+                            }
                         </div>
                         <div class="col-lg-4 wow fadeIn" data-wow-delay="0.5s">
                             <h1 class="mb-4">{annonce.description}</h1>
@@ -43,7 +41,7 @@ function DetailsAnnonce({annonce}){
                             {annonce.annonceDetailsModeles.map(axe=>(
                                 <p><i class="fa fa-check text-primary me-3"></i>{axe.axePossibleValues.value}</p>
                             ))}
-                            <button class="btn btn-primary py-3 px-5 mt-3" style={{borderColor: "white"}} onClick={e=> checkToken()}>Contact</button> 
+                            <button class="btn btn-primary py-3 px-5 mt-3" style={{borderColor: "white"}} onClick={e=> checkToken(annonce.ownerId)}>Contact</button> 
                         </div>
                     </div>
                 </div>

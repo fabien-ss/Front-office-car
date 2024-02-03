@@ -32,14 +32,14 @@ function Search(){
                     <dic class="col-md-10">
                         <div class="col-md-4">
                             <label class="">Prix</label>
-                            <input class="form-control border-0 py-3 mb-2" placeholder="MAX"/>
-                            <input class="form-control border-0 py-3 mb-2" placeholder="MIN"/>
+                            <input class="form-control border-0 py-3 mb-2" name="prixMax" placeholder="MAX"/>
+                            <input class="form-control border-0 py-3 mb-2" name="prixMin" placeholder="MIN"/>
                         </div>
                     </dic>
                     <div class="col-md-10">
                         <div class="row g-2">
                             <div class="col-md-4">
-                                <select class="form-select border-0 py-3">
+                                <select class="form-select border-0 py-3" name="marque">
                                     <option selected>Marque</option>
                                     <option>Laisser vide</option>
                                     {marque.map(m=>(
@@ -49,7 +49,7 @@ function Search(){
                             </div>
                             {axes.map(axe=>(
                                 <div class="col-md-4">
-                                    <select class="form-select border-0 py-3">
+                                    <select class="form-select border-0 py-3" >
                                         <option selected>{axe.nom}</option>
                                         <option>Laisser vide</option>
                                         {axe.axeValues.map(values=>(

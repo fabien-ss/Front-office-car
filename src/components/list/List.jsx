@@ -7,6 +7,8 @@ import DetailsAnnonce from "./DetailsAnnonce";
 
 import carousel from "../../assets/img/carousel-3.jpeg";
 
+import notFound from "../../assets/img/not-found.png"
+
 import { useNavigate } from "react-router-dom";
 import Loader from "../loader/Loader";
 function List(){
@@ -37,15 +39,27 @@ function List(){
         console.log(url);
         const data = await sendNonSecuredGetRequest(url, {}, "GET");
         setAnnonce(data.data.annonces);
+        console.log("data before ", data);
+        //convertBytesPhotoToBas64();
+        console.log("data ", data)
     }
+
+    function convertBytesPhotoToBas64(fieldBytes){
+        let binary = "";
+        for (let i = 0; i < fieldBytes.length; i++) {
+            binary += String.fromCharCode(fieldBytes[i]);
+        }
+        return binary;   
+    }
+
     useEffect(()=>{
         fetchAnnonce();
     }, [])
 
-    function checkToken(){
+    function checkToken(idOwner){
         const token = localStorage.getItem("token");
         console.log("token ", token);
-        if(token) navigate("/notification");
+        if(token) navigate("/notification/"+idOwner);
         else{
             navigate("/login");
         }
@@ -92,7 +106,12 @@ function List(){
                                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
                                     <div class="property-item rounded overflow-hidden">
                                         <div class="position-relative overflow-hidden">
-                                            <a href=""><img class="img-fluid" src={carousel/*annonce.photoSet[0] && "data:image/png;base64,"+annonce?.photoSet[0].text*/} alt="" /></a>
+                                            {annonce.photoSet[0] && 
+                                                <a href=""><img class="img-fluid" style={{maxWidth: 500, maxHeight: 300, minWidth: 500, minHeight: 300}} src={"data:image/png;base64,"+annonce?.photoSet[0]?.fieldBytes} alt="" /></a>
+                                            }
+                                            {!annonce.photoSet[0] && 
+                                                <a href=""><img class="img-fluid" src={notFound} alt="" style={{maxWidth: 500, maxHeight: 300, minWidth: 500, minHeight: 300}} /></a>
+                                            }
                                             <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">For Sell</div>
                                         </div>
                                         <div class="p-4 pb-0">
@@ -113,7 +132,7 @@ function List(){
                                                     </Popup>
                                                 </li>
                                                  <li class="nav-item me-4">
-                                                    <button class="btn btn-outline-primary" data-bs-toggle="pill" onClick={e => checkToken()}>Contacter</button>
+                                                    <button class="btn btn-outline-primary" data-bs-toggle="pill" onClick={e => checkToken(annonce.ownerId)}>Contacter</button>
                                                 </li>
                                             </ul>
                                         </div>

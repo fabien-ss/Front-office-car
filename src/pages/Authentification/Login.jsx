@@ -23,6 +23,9 @@ function Login(){
         console.log(response);
         if(response.data.utilisateur){
             setLoad(false);
+            console.log(response.data.utilisateur);
+            localStorage.setItem("user", response.data.utilisateur);
+            localStorage.setItem("userId", response.data.utilisateur.idUtilisateur);
             localStorage.setItem("token", response.data.token);
             navige("/");
         }else{

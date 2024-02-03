@@ -1,21 +1,77 @@
-function Message(){
+import { useState, useEffect } from "react";
+import { API_URL } from "../../constante/constante";
+import { sendDataToApi, sendGetRequest } from "../../fonction/fonction";
+import "./Message.css";
+
+function Message({idEnvoyeur, idAnnonce}){
+
+    const [message, setMessage] = useState([]);
+
+    async function fetchMessageInner(){
+        const userId = localStorage.getItem("userId");
+        const userSenderId = idEnvoyeur;
+        console.log("sender "+idEnvoyeur);
+        const url = API_URL + "/message/" + userId + "/" + userSenderId + "/" + idAnnonce;
+        console.log("url "+url);
+        const response = await sendGetRequest(url, {}, "GET");
+        console.log("response "+response.data.recu[0].message);
+        setMessage(response.data.recu);
+    }
+
+    async function sendMessage(event){
+        event.preventDefault();
+        const userId = localStorage.getItem("userId");
+        const data = {
+            "idEnvoyeur": userId,
+            "idReceveur": idEnvoyeur,
+            "message": event.target.box.value,
+            "idAnnonce": idAnnonce
+        }
+        const url = API_URL + "/message";
+        console.log("mesage "+event.target.box.value);
+        await sendDataToApi(url, data, "POST");
+        fetchMessageInner();
+    }
+
+    useEffect(() => {
+        fetchMessageInner();
+    }, []);
+
     return(
-        <div class="container-xxl py-5">
-            <div class="container ">
-                <div class="bg-light rounded p-3">
-                    <div class="bg-white rounded p-4" style={{border: "1px dashed rgba(0,   185, 142, .3)"}}>
-                        <div class="row g-5 align-items-center">
-                            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container ">
+            <div class="row" style={{maxHeight: "500px", overflow: "scroll", padding: "5%", border: "1px solid"}}>
+                <div className="card-body" style={{display: "contents"}}>
+                    {message.map(m => (
+                        <span className="col-12 mb-2" style={{width: "100%"}}>
+                            {m.idEnvoyeur === idEnvoyeur &&
+                                <span className="btn btn-primary py-3 px-5 mt-3" style={{float: "left"}}>
+                                    <h6>{m?.message}</h6>
+                                    <p>{m.dateEnvoie}</p>
+                                </span>
+                            }
+                            {m.idEnvoyeur !== idEnvoyeur &&
+                                <span className="btn btn-primary py-3 px-5 mt-3" style={{float: "right"}}>
+                                    <h6>{m?.message}</h6>
+                                    <p>{m.dateEnvoie}</p>
+                                </span>
+                            }
+                        </span>
+                    ))}
+                </div>
+                    
+            </div>
+                <div style={{marginBottom: 0}} className="car-footer">
+                    <form onSubmit={e => sendMessage(e)}>
+                        <div className="row">
+                            <div className="col-9">
+                                <textarea style={{width: "100%"}} name="box"></textarea>
                             </div>
-                            <div class="col-lg-6 wow fadeIn text-md-start mb-3 mb-md-0" data-wow-delay="0.5s">
-                                <div style={{marginBottom: 0}}>
-                                    <a href="" class="btn btn-dark py-3 px-4"><i class="fa fa-calendar-alt me-2"></i>Envoyer</a>    
-                                </div>
+                            <div className="col-3">
+                                <button style={{width: "100%"}} className="btn btn-dark"><i class="fa fa-calendar-alt me-2"></i>Envoyer</button>          
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
-            </div>
         </div>
     )
 }
