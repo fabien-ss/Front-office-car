@@ -67,9 +67,9 @@ function Notification(){
                     </ul>
                 </div>
                 <div className="col-9">
-                    {selected &&
+                    
                         <Message idEnvoyeur={selected.idEnvoyeur} idAnnonce={selected.annonceDTO.idAnnonce}/>
-                    }
+                   
                 </div>
             </div>
         </div>
