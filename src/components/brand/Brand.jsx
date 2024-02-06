@@ -31,7 +31,7 @@ export function Brand(){
                             <a class="cat-item d-block bg-light text-center rounded p-3" href="ok">
                                 <div class="rounded p-4">
                                     <div class="icon mb-3">
-                                        <img class="img-fluid" src="img/icon-apartment.png" alt="Icon" />
+                                        <img class="img-fluid" src="" alt="Icon" />
                                     </div>
                                     <h6>{brand.nom}</h6>
                                     <span>123 Properties</span>

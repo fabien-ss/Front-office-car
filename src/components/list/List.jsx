@@ -19,6 +19,8 @@ function List(){
 
     const [min, setMin] = useState(0);
 
+    const [filter, setFilter] = useState(false);
+
     async function previous(){
         setMax(min);
         setMin(min - 6);
@@ -67,7 +69,6 @@ function List(){
 
     return (
         <>
-        <Search />
         
         <div class="container-xxl py-5">
             <div class="container">
@@ -80,6 +81,9 @@ function List(){
                     </div>
                     <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
                         <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
+                            <li class="nav-item me-2">
+                                <button class="btn btn-outline-primary " data-bs-toggle="pill" onClick={e => setFilter(!filter)}>Filter</button>
+                            </li>
                             {min > 0 &&
                                 <li class="nav-item me-2">
                                     <button class="btn btn-outline-primary " data-bs-toggle="pill" onClick={e => previous()}>Previous</button>
@@ -99,6 +103,7 @@ function List(){
                     </div>
                 </div>
                 <div class="tab-content">
+                    {filter && <Search />}
                     {annonces.length > 0 &&
                     <div id="tab-1" class="tab-pane fade show p-0 active">
                         <div class="row g-4">
