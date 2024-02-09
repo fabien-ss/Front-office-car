@@ -34,6 +34,10 @@ function List(){
 
     const [annonces, setAnnonce] = useState([]);
 
+    const handleDataFromChild = (data) => {
+        setAnnonce(data);
+      };
+
     const fetchAnnonce = useCallback(async () => {
         const url = API_URL + "/annonce/" + max + "/" + min;
         console.log(url);
@@ -94,7 +98,7 @@ function List(){
                     </div>
                 </div>
                 <div class="tab-content">
-                    {filter && <Search />}
+                    {filter && <Search sendData={handleDataFromChild} />}
                     {annonces.length > 0 &&
                     <div id="tab-1" class="tab-pane fade show p-0 active">
                         <div class="row g-4">

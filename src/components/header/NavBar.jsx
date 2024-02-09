@@ -37,13 +37,13 @@ function NavBar(){
                         <a href="/" class="nav-item nav-link active">Home</a>
                         <a href="about.html" class="nav-item nav-link">About</a>
                         <div class="nav-item dropdown">
-                            <a href="/list" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Annonce</a>
+                            <p class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Annonce</p>
                             <div class="dropdown-menu rounded-0 m-0">
                                 <button onClick={e => navigate("/list")} class="dropdown-item">Liste des annonces</button>
                             </div>
                         </div>
                         <div class="nav-item dropdown">
-                            <button onClick={e => navigate("/brand")} class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Car</button>
+                            <p onClick={e => navigate("/brand")} class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Car</p>
                             <div class="dropdown-menu rounded-0 m-0">
                                 <button onClick={e => navigate("/brand")}  class="dropdown-item">Brand</button>
                             </div>

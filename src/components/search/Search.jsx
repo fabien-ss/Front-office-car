@@ -3,7 +3,7 @@ import { API_URL } from "../../constante/constante";
 import { sendNonSecuredGetRequest } from "../../fonction/fonction";
 import Loader from "../loader/Loader";
 
-function Search(){
+function Search({sendData}){
     
     const [axes, setAxe] = useState([]);
     const [marque, setMarque] = useState([]);
@@ -51,7 +51,8 @@ function Search(){
         const url = API_URL + "/annonce/find";
         const response = await sendNonSecuredGetRequest(url, data, "POST");
         setLoad(false);
-        console.log("response: ", response);
+        sendData(response.data.annonces);
+        console.log("response: ", response.data.annonces);
     }
 
     return (
@@ -61,17 +62,12 @@ function Search(){
                 <h1>Ajouter des filtres</h1>
                 <form onSubmit={e => { fetchFormData(e) } }>
                 <div class="row g-2">
-                        <div class="col-md-6">
-                            <label class="">Prix</label>
-                            <input class="form-control border-0 py-3 mb-2" value="100000" name="prixSup" placeholder="MAX"/>
-                            <input class="form-control border-0 py-3 mb-2" value="0" name="prixInf" placeholder="MIN"/>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="">Annee</label>
-                            <input class="form-control border-0 py-3 mb-2" value="100000" name="anneeSup" placeholder="MAX"/>
-                            <input class="form-control border-0 py-3 mb-2" value="0" name="anneeInf" placeholder="MIN"/>
-                        </div>
-                    <div class="col-md-12">
+                            <input type="hidden" class="form-control border-0 py-3 mb-2" value="100000" name="prixSup" placeholder="MAX"/>
+                            <input type="hidden" class="form-control border-0 py-3 mb-2" value="0" name="prixInf" placeholder="MIN"/>
+                        
+                            <input type="hidden" class="form-control border-0 py-3 mb-2" value="100000" name="anneeSup" placeholder="MAX"/>
+                            <input type="hidden" class="form-control border-0 py-3 mb-2" value="0" name="anneeInf" placeholder="MIN"/>
+                      <div class="col-md-12">
                         <div class="row g-2">
                             <div class="col-md-12">
                                 <select class="form-select border-0 py-3" name="marque">
