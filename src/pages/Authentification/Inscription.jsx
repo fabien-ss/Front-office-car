@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
+import { signUp } from "../../fonction/authentification";
+import { API_URL } from "../../constante/constante";
+import Loader from "../../components/loader/Loader";
+import { sendDataToApi } from "../../fonction/fonction";
+import { useNavigate } from "react-router-dom";
 
 function Inscription(){
 
-    const handleSubmit = (e) =>{
+    const navige = useNavigate();
+
+    const [load, setLoad] = useState(false);
+
+    const handleSubmit = async (e) =>{
         e?.preventDefault();
-        console.log(e);
+        setLoad(true);
+        const url = API_URL + "/signin";    
         const data = {
             nom: e.target[0].value,
             prenom: e.target[1].value,
@@ -14,11 +24,25 @@ function Inscription(){
             sexe: e.target[5].value,
         };
         console.log("data ",data);
-
+        await signUp(data.email, data.password);
+        const response = sendDataToApi(url,data, "POST");
+        if(response.data.utilisateur){
+            setLoad(false);
+            console.log(response.data.utilisateur);
+            localStorage.setItem("user", response.data.utilisateur);
+            localStorage.setItem("userId", response.data.utilisateur.idUtilisateur);
+            localStorage.setItem("token", response.data.token);
+            navige("/");
+        }else{
+            setLoad(false);
+            alert(response.data.error);
+        }
+        setLoad(false);
     }
 
     return(
         <div class="container-xxl bg-white p-0">
+            {load && <Loader />}
             <div class="container py-5 mt-5">
                 <div class="row g-5">
                     <div class="col-lg-12 col-md-6" style={{paddingBottom: "2%", padding: "5%"}}>

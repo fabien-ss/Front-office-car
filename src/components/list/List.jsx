@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import Search from "../search/Search";
 import { API_URL } from "../../constante/constante";
 import { formatDate, sendNonSecuredGetRequest } from "../../fonction/fonction";
 import Popup from 'reactjs-popup';
 import DetailsAnnonce from "./DetailsAnnonce";
 
-import carousel from "../../assets/img/carousel-3.jpeg";
+import notFound from "../../assets/img/not-found.png"
 
 import { useNavigate } from "react-router-dom";
-import Loader from "../loader/Loader";
+import "../../assets/css/popup.css";
+
 function List(){
 
     const navigate = useNavigate();
@@ -16,6 +17,8 @@ function List(){
     const [max, setMax] = useState(6);
 
     const [min, setMin] = useState(0);
+
+    const [filter, setFilter] = useState(false);
 
     async function previous(){
         setMax(min);
@@ -31,29 +34,32 @@ function List(){
 
     const [annonces, setAnnonce] = useState([]);
 
-    
-    async function fetchAnnonce(){
-        const url = API_URL + "/annonce/"+max+"/"+min;
+    const fetchAnnonce = useCallback(async () => {
+        const url = API_URL + "/annonce/" + max + "/" + min;
         console.log(url);
         const data = await sendNonSecuredGetRequest(url, {}, "GET");
         setAnnonce(data.data.annonces);
-    }
-    useEffect(()=>{
+        console.log("data before ", data);
+        console.log("data ", data);
+    }, [max, min, setAnnonce]);
+    
+    useEffect(() => {
         fetchAnnonce();
-    }, [])
-
-    function checkToken(){
+    }, [fetchAnnonce])
+    
+    function checkToken(annonce){
         const token = localStorage.getItem("token");
         console.log("token ", token);
-        if(token) navigate("/notification");
+        if(token) {
+            navigate("/notification");
+        }
         else{
             navigate("/login");
         }
     }
-
+    
     return (
         <>
-        <Search />
         
         <div class="container-xxl py-5">
             <div class="container">
@@ -66,6 +72,9 @@ function List(){
                     </div>
                     <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
                         <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
+                            <li class="nav-item me-2">
+                                <button class="btn btn-outline-primary " data-bs-toggle="pill" onClick={e => setFilter(!filter)}>Filter</button>
+                            </li>
                             {min > 0 &&
                                 <li class="nav-item me-2">
                                     <button class="btn btn-outline-primary " data-bs-toggle="pill" onClick={e => previous()}>Previous</button>
@@ -85,6 +94,7 @@ function List(){
                     </div>
                 </div>
                 <div class="tab-content">
+                    {filter && <Search />}
                     {annonces.length > 0 &&
                     <div id="tab-1" class="tab-pane fade show p-0 active">
                         <div class="row g-4">
@@ -92,12 +102,17 @@ function List(){
                                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
                                     <div class="property-item rounded overflow-hidden">
                                         <div class="position-relative overflow-hidden">
-                                            <a href=""><img class="img-fluid" src={carousel/*annonce.photoSet[0] && "data:image/png;base64,"+annonce?.photoSet[0].text*/} alt="" /></a>
+                                            {annonce.photoSet[0] && 
+                                                <img class="img-fluid" style={{maxWidth: 500, maxHeight: 300, minWidth: 500, minHeight: 300}} src={"data:image/png;base64,"+annonce?.photoSet[0]?.fieldBytes} alt="" />
+                                            }
+                                            {!annonce.photoSet[0] && 
+                                                <img class="img-fluid" src={notFound} alt="" style={{maxWidth: 500, maxHeight: 300, minWidth: 500, minHeight: 300}} />
+                                            }
                                             <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">For Sell</div>
                                         </div>
                                         <div class="p-4 pb-0">
                                             <h5 class="text-primary mb-3">{annonce.prix}</h5>
-                                            <a class="d-block h5 mb-2" href="">{annonce.description}</a>
+                                            <p class="d-block h5 mb-2" >{annonce.description}</p>
                                             <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{formatDate(annonce.dateAnnonce)}</p>
                                         </div>
                                         <div class="d-flex border-top">
@@ -113,7 +128,7 @@ function List(){
                                                     </Popup>
                                                 </li>
                                                  <li class="nav-item me-4">
-                                                    <button class="btn btn-outline-primary" data-bs-toggle="pill" onClick={e => checkToken()}>Contacter</button>
+                                                    <button class="btn btn-outline-primary" data-bs-toggle="pill" onClick={e => checkToken(annonce)}>Contacter</button>
                                                 </li>
                                             </ul>
                                         </div>
@@ -132,7 +147,7 @@ function List(){
         </div>
     </>
 
-    )
+)
 }
 
 export default List;

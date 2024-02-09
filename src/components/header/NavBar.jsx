@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from "react";
 import iconDeal from "../../assets/img/icon-deal.png";
 import { logout } from "../../fonction/fonction";
+import { useNavigate } from "react-router-dom";
 
 function NavBar(){
     const [token, setToken] = useState();
 
+    const navigate  = useNavigate();
     useEffect(()=>{
         setToken(localStorage.getItem("token"));
     }, []);
+
+     
+    function checkToken(){
+        const token = localStorage.getItem("token");
+        console.log("token ", token);
+        if(!token){
+            navigate("/login");
+        }
+    }
 
     return(
         <div class="container-fluid nav-bar bg-transparent">
@@ -26,26 +37,23 @@ function NavBar(){
                         <a href="/" class="nav-item nav-link active">Home</a>
                         <a href="about.html" class="nav-item nav-link">About</a>
                         <div class="nav-item dropdown">
-                            <a href="ok" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Annonce</a>
+                            <a href="/list" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Annonce</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="/list" class="dropdown-item">Liste des annonces</a>
-                                <a href="property-type.html" class="dropdown-item">Property Type</a>
-                                <a href="property-agent.html" class="dropdown-item">Property Agent</a>
+                                <button onClick={e => navigate("/list")} class="dropdown-item">Liste des annonces</button>
                             </div>
                         </div>
                         <div class="nav-item dropdown">
-                            <a href="ok" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Car</a>
+                            <button onClick={e => navigate("/brand")} class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Car</button>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="/brand" class="dropdown-item">Brand</a>
-                                <a href="404.html" class="dropdown-item">404 Error</a>
+                                <button onClick={e => navigate("/brand")}  class="dropdown-item">Brand</button>
                             </div>
                         </div>
                         {token &&
-                            <a href="/notification" class="nav-item nav-link">Message</a>
+                            <button onClick={e => navigate("/notification")}  class="nav-item nav-link">Message</button>
                         }
                     </div>
                     {!token && 
-                        <a href="/login" class="btn btn-outline-primary px-3 d-none d-lg-flex">Se connecter</a>
+                        <button onClick={e => checkToken()} class="btn btn-outline-primary px-3 d-none d-lg-flex">Se connecter</button>
                     }
                     {token && 
                         <button onClick={e => logout()} class="btn btn-primary px-3 d-none d-lg-flex">Se deconnecter</button>
