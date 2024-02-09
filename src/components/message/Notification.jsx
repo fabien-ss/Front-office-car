@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Message from "./Message";
 import { sendGetRequest } from "../../fonction/fonction";
 import { useNavigate } from "react-router-dom";
@@ -32,19 +32,18 @@ function Notification(){
             alert(Error);
         }
     }
-    
-    function check(){
+    const check = useCallback(() => {
         const token = localStorage.getItem("token");
-        if(token === undefined || token === null || token === ""){
+        if (!token) {
             navigate("/login");
         }
-    }
-
+    }, [navigate]); // Assuming navigate is stable and doesn't change on every render
+    
     useEffect(() => {
         fetchMessage();
         check();
-    }, [selected]); 
-
+    }, [selected, check]); // Now check is stable and only changes when navigate changes
+    
  
     function displayMessage(m){
         setSelected(false);

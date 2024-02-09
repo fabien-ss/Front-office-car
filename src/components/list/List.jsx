@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import Search from "../search/Search";
 import { API_URL } from "../../constante/constante";
 import { formatDate, sendNonSecuredGetRequest } from "../../fonction/fonction";
@@ -33,27 +33,19 @@ function List(){
     const [annonces, setAnnonce] = useState([]);
 
     
-    async function fetchAnnonce(){
-        const url = API_URL + "/annonce/"+max+"/"+min;
+    const fetchAnnonce = useCallback(async () => {
+        const url = API_URL + "/annonce/" + max + "/" + min;
         console.log(url);
         const data = await sendNonSecuredGetRequest(url, {}, "GET");
         setAnnonce(data.data.annonces);
         console.log("data before ", data);
-        console.log("data ", data)
-    }
-
-    function convertBytesPhotoToBas64(fieldBytes){
-        let binary = "";
-        for (let i = 0; i < fieldBytes.length; i++) {
-            binary += String.fromCharCode(fieldBytes[i]);
-        }
-        return binary;   
-    }
-
-    useEffect(()=>{
+        console.log("data ", data);
+    }, [max, min, setAnnonce]);
+    
+    useEffect(() => {
         fetchAnnonce();
-    }, [])
-
+    }, [fetchAnnonce]);
+    
     function checkToken(idOwner){
         const token = localStorage.getItem("token");
         console.log("token ", token);
@@ -108,16 +100,16 @@ function List(){
                                     <div class="property-item rounded overflow-hidden">
                                         <div class="position-relative overflow-hidden">
                                             {annonce.photoSet[0] && 
-                                                <a href=""><img class="img-fluid" style={{maxWidth: 500, maxHeight: 300, minWidth: 500, minHeight: 300}} src={"data:image/png;base64,"+annonce?.photoSet[0]?.fieldBytes} alt="" /></a>
+                                                <img class="img-fluid" style={{maxWidth: 500, maxHeight: 300, minWidth: 500, minHeight: 300}} src={"data:image/png;base64,"+annonce?.photoSet[0]?.fieldBytes} alt="" />
                                             }
                                             {!annonce.photoSet[0] && 
-                                                <a href=""><img class="img-fluid" src={notFound} alt="" style={{maxWidth: 500, maxHeight: 300, minWidth: 500, minHeight: 300}} /></a>
+                                                <img class="img-fluid" src={notFound} alt="" style={{maxWidth: 500, maxHeight: 300, minWidth: 500, minHeight: 300}} />
                                             }
                                             <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">For Sell</div>
                                         </div>
                                         <div class="p-4 pb-0">
                                             <h5 class="text-primary mb-3">{annonce.prix}</h5>
-                                            <a class="d-block h5 mb-2" href="">{annonce.description}</a>
+                                            <p class="d-block h5 mb-2" >{annonce.description}</p>
                                             <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{formatDate(annonce.dateAnnonce)}</p>
                                         </div>
                                         <div class="d-flex border-top">

@@ -16,7 +16,7 @@ function Message({idEnvoyeur, idAnnonce}){
         const response = await sendGetRequest(url, {}, "GET");
         console.log("response "+response.data.recu);
         setMessage(response.data.recu);
-      }, [/* dependencies array */]);
+      }, [idEnvoyeur, idAnnonce]);
       
 
 
@@ -37,7 +37,7 @@ function Message({idEnvoyeur, idAnnonce}){
 
     useEffect(() => {
         fetchMessageInner();
-    }, []);
+    }, [fetchMessageInner]);
 
     return(
         <div class="container ">
