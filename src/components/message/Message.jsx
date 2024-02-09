@@ -17,9 +17,8 @@ function Message({props}){
         const response = await sendGetRequest(url, {}, "GET");
         console.log("response "+response.data.recu);
         setMessage(response.data.recu);
-      }, [idEnvoyeur, idAnnonce]);
+      }, [props]);
       
-
 
     async function sendMessage(event){
         event.preventDefault();

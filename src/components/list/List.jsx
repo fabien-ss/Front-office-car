@@ -8,7 +8,6 @@ import DetailsAnnonce from "./DetailsAnnonce";
 import notFound from "../../assets/img/not-found.png"
 
 import { useNavigate } from "react-router-dom";
-import Loader from "../loader/Loader";
 import "../../assets/css/popup.css";
 
 function List(){
@@ -47,12 +46,14 @@ function List(){
     
     useEffect(() => {
         fetchAnnonce();
-    }, [])
+    }, [fetchAnnonce])
     
-    function checkToken(idOwner){
+    function checkToken(annonce){
         const token = localStorage.getItem("token");
         console.log("token ", token);
-        if(token) navigate("/notification/"+annonce.ownerId+"/"+annonce.idAnnonce);
+        if(token) {
+            navigate("/notification");
+        }
         else{
             navigate("/login");
         }
