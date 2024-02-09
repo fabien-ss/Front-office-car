@@ -3,7 +3,7 @@ import { onMessageListener, requestPermission } from "../fonction/firebase";
 
 export function Notification(){
 
-    const [notification, setNotification] = useState({title: "", body : ""});
+    const [setNotification] = useState({title: "", body : ""});
 
     useEffect(() =>{
         requestPermission();
