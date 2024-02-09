@@ -20,7 +20,7 @@ function Login(){
             password: e.target[1].value
         };
         const url = API_URL + "/authentification/login";
-        signIn(data.email, data.password);
+        await signIn(data.email, data.password);
         const response = await sendDataToApi(url,data, "POST");
         console.log(response);
         if(response.data.utilisateur){

@@ -5,12 +5,9 @@ import { formatDate, sendNonSecuredGetRequest } from "../../fonction/fonction";
 import Popup from 'reactjs-popup';
 import DetailsAnnonce from "./DetailsAnnonce";
 
-import carousel from "../../assets/img/carousel-3.jpeg";
-
 import notFound from "../../assets/img/not-found.png"
 
 import { useNavigate } from "react-router-dom";
-import Loader from "../loader/Loader";
 function List(){
 
     const navigate = useNavigate();
@@ -42,7 +39,6 @@ function List(){
         const data = await sendNonSecuredGetRequest(url, {}, "GET");
         setAnnonce(data.data.annonces);
         console.log("data before ", data);
-        //convertBytesPhotoToBas64();
         console.log("data ", data)
     }
 

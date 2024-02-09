@@ -14,7 +14,7 @@ function Message({idEnvoyeur, idAnnonce}){
         const url = API_URL + "/message/" + userId + "/" + userSenderId + "/" + idAnnonce;
         console.log("url "+url);
         const response = await sendGetRequest(url, {}, "GET");
-        console.log("response "+response.data.recu[0].message);
+        console.log("response "+response.data.recu);
         setMessage(response.data.recu);
       }, [/* dependencies array */]);
       
