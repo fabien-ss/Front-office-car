@@ -6,10 +6,11 @@ function DetailsAnnonce({annonce}){
 
     const navigate = useNavigate();
 
-    function checkToken(idSender){
+    function checkToken(annonce){
         const token = localStorage.getItem("token");
         console.log("token ", token);
-        if(token) navigate("/notification/"+idSender);
+        const url  = "/notification/"+annonce.ownerId +"/"+annonce.idAnnonce;
+        if(token) navigate(url);
         else{
             navigate("/login");
         }
@@ -40,7 +41,7 @@ function DetailsAnnonce({annonce}){
                             {annonce.annonceDetailsModeles.map(axe=>(
                                 <p><i class="fa fa-check text-primary me-3"></i>{axe.axePossibleValues.value}</p>
                             ))}
-                            <button class="btn btn-primary py-3 px-5 mt-3" style={{borderColor: "white"}} onClick={e=> checkToken(annonce.ownerId)}>Contact</button> 
+                            <button class="btn btn-primary py-3 px-5 mt-3" style={{borderColor: "white"}} onClick={e=> checkToken(annonce)}>Contact</button> 
                         </div>
                     </div>
                 </div>

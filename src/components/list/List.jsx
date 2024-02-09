@@ -8,6 +8,9 @@ import DetailsAnnonce from "./DetailsAnnonce";
 import notFound from "../../assets/img/not-found.png"
 
 import { useNavigate } from "react-router-dom";
+import Loader from "../loader/Loader";
+import "../../assets/css/popup.css";
+
 function List(){
 
     const navigate = useNavigate();
@@ -44,17 +47,17 @@ function List(){
     
     useEffect(() => {
         fetchAnnonce();
-    }, [fetchAnnonce]);
+    }, [])
     
     function checkToken(idOwner){
         const token = localStorage.getItem("token");
         console.log("token ", token);
-        if(token) navigate("/notification/"+idOwner);
+        if(token) navigate("/notification/"+annonce.ownerId+"/"+annonce.idAnnonce);
         else{
             navigate("/login");
         }
     }
-
+    
     return (
         <>
         
@@ -125,7 +128,7 @@ function List(){
                                                     </Popup>
                                                 </li>
                                                  <li class="nav-item me-4">
-                                                    <button class="btn btn-outline-primary" data-bs-toggle="pill" onClick={e => checkToken(annonce.ownerId)}>Contacter</button>
+                                                    <button class="btn btn-outline-primary" data-bs-toggle="pill" onClick={e => checkToken(annonce)}>Contacter</button>
                                                 </li>
                                             </ul>
                                         </div>
@@ -144,7 +147,7 @@ function List(){
         </div>
     </>
 
-    )
+)
 }
 
 export default List;
