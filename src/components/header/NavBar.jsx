@@ -39,17 +39,17 @@ function NavBar(){
                         <div class="nav-item dropdown">
                             <a href="/list" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Annonce</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="/list" class="dropdown-item">Liste des annonces</a>
+                                <button onClick={e => navigate("/list")} class="dropdown-item">Liste des annonces</button>
                             </div>
                         </div>
                         <div class="nav-item dropdown">
-                            <a href="ok" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Car</a>
+                            <button onClick={e => navigate("/brand")} class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Car</button>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="/brand" class="dropdown-item">Brand</a>
+                                <button onClick={e => navigate("/brand")}  class="dropdown-item">Brand</button>
                             </div>
                         </div>
                         {token &&
-                            <a href="/notification" class="nav-item nav-link">Message</a>
+                            <button onClick={e => navigate("/notification")}  class="nav-item nav-link">Message</button>
                         }
                     </div>
                     {!token && 

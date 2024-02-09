@@ -34,7 +34,6 @@ function List(){
 
     const [annonces, setAnnonce] = useState([]);
 
-    
     const fetchAnnonce = useCallback(async () => {
         const url = API_URL + "/annonce/" + max + "/" + min;
         console.log(url);
