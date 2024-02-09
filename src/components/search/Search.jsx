@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { API_URL } from "../../constante/constante";
-import { sendDataToApi, sendNonSecuredGetRequest } from "../../fonction/fonction";
+import { sendNonSecuredGetRequest } from "../../fonction/fonction";
 import Loader from "../loader/Loader";
 
 function Search(){

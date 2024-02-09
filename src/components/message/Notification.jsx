@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Message from "./Message";
-import { CheckToken, sendGetRequest } from "../../fonction/fonction";
+import { sendGetRequest } from "../../fonction/fonction";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../constante/constante";
 function Notification(){
