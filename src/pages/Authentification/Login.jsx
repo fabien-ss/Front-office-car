@@ -3,6 +3,7 @@ import { sendDataToApi } from "../../fonction/fonction";
 import { API_URL } from "../../constante/constante";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/loader/Loader";
+import { signIn } from "../../fonction/authentification";
 
 function Login(){
 
@@ -19,6 +20,7 @@ function Login(){
             password: e.target[1].value
         };
         const url = API_URL + "/authentification/login";
+        await signIn(data.email, data.password);
         const response = await sendDataToApi(url,data, "POST");
         console.log(response);
         if(response.data.utilisateur){

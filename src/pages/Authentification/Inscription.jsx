@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import { sendDataToApi } from "../../fonction/fonction";
+import { signUp } from "../../fonction/authentification";
 import { API_URL } from "../../constante/constante";
-import { useNavigate } from "react-router-dom";
 import Loader from "../../components/loader/Loader";
+import { sendDataToApi } from "../../fonction/fonction";
+import { useNavigate } from "react-router-dom";
 
 function Inscription(){
 
-   /* const handleSubmit = (e) =>{
+    const navige = useNavigate();
+
+    const [load, setLoad] = useState(false);
+
+    const handleSubmit = async (e) =>{
         e?.preventDefault();
-        console.log(e);
+        setLoad(true);
+        const url = API_URL + "/signin";    
         const data = {
             nom: e.target[0].value,
             prenom: e.target[1].value,
@@ -18,27 +24,8 @@ function Inscription(){
             sexe: e.target[5].value,
         };
         console.log("data ",data);
-
-    }*/
-    const [load, setLoad] = useState(false);
-
-    const navige = useNavigate();
-    const handleSubmit = async (e) =>{
-        setLoad(true);
-        e?.preventDefault();
-        console.log(e);
-        const data = {
-            nom: e.target[0].value,
-            prenom: e.target[1].value,
-            dateDeNaissance: e.target[2].value,
-            email: e.target[3].value,
-            password: e.target[4].value,
-            validationMotDePasse: e.target[5].value,
-            sexe: e.target[6].value,
-        };
-        const url = API_URL + "/authentification/signin";
-        const response = await sendDataToApi(url,data, "POST");
-        console.log(response);
+        await signUp(data.email, data.password);
+        const response = sendDataToApi(url,data, "POST");
         if(response.data.utilisateur){
             setLoad(false);
             console.log(response.data.utilisateur);
@@ -55,7 +42,7 @@ function Inscription(){
 
     return(
         <div class="container-xxl bg-white p-0">
-              {load && <Loader />}
+            {load && <Loader />}
             <div class="container py-5 mt-5">
                 <div class="row g-5">
                     <div class="col-lg-12 col-md-6" style={{paddingBottom: "2%", padding: "5%"}}>
@@ -77,16 +64,13 @@ function Inscription(){
                                 <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" name="password" placeholder="Password" />
                             </div>
                             <div class="position-relative mx-auto  mb-3" style={{maxWidth: "400px;"}}>
-                                <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" name="validationMotDePasse" placeholder="Check your assword" />
-                            </div>
-                            <div class="position-relative mx-auto  mb-3" style={{maxWidth: "400px;"}}>
                                 <select class="form-select bg-transparent w-100 py-3 ps-4 pe-5" type="text" name="sexe" placeholder="Sexe">
                                     <option value="1">Homme</option>
                                     <option value="0">Femme</option>
                                 </select>
                             </div>
                             <div class="position-relative mx-auto  mb-3" style={{maxWidth: "400px;"}}>
-                                <button type="submit" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignIn</button>
+                                <button type="submit" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
                             </div>
                         </form>
                     </div>

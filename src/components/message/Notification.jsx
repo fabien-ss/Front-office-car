@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Message from "./Message";
-import { CheckToken, sendGetRequest } from "../../fonction/fonction";
+import { sendGetRequest } from "../../fonction/fonction";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../constante/constante";
 function Notification(){
@@ -22,27 +22,28 @@ function Notification(){
     async function fetchMessage(){
         const userId = localStorage.getItem("userId");
         console.log("userId ", userId);
-        const url = API_URL + "/message/"+userId;
+        const url = API_URL + "/discussion/"+userId;
         const response = await sendGetRequest(url, {}, "GET");
+       
+        console.log("response ", response);
         try{
-            setMessage(response.data.recu);
+            setMessage(response.data.discussion);
         }catch(Error){
             alert(Error);
         }
     }
-    
-    function check(){
+    const check = useCallback(() => {
         const token = localStorage.getItem("token");
-        if(token === undefined || token === null || token === ""){
+        if (!token) {
             navigate("/login");
         }
-    }
-
+    }, [navigate]); // Assuming navigate is stable and doesn't change on every render
+    
     useEffect(() => {
         fetchMessage();
         check();
-    }, [selected]); 
-
+    }, [selected, check]); // Now check is stable and only changes when navigate changes
+    
  
     function displayMessage(m){
         setSelected(false);
@@ -59,17 +60,17 @@ function Notification(){
                         {message?.map(m =>
                             <button class="list-group-item" onClick={e => displayMessage(m)}>
                                 <h3>
-                                    {m.annonceDTO.description}
+                                    {m.nomSender}
                                 </h3>
-                                {m.nomEnvoyeur}
+                                <p>Annonce :</p> {m.idAnnonce}
                             </button>
-                            )}
+                        )}
                     </ul>
                 </div>
                 <div className="col-9">
-                    
-                        <Message idEnvoyeur={selected.idEnvoyeur} idAnnonce={selected.annonceDTO.idAnnonce}/>
-                   
+                    {selected &&
+                        <Message idEnvoyeur={selected.idSender} idAnnonce={selected.idAnnonce}/>
+                    }
                 </div>
             </div>
         </div>

@@ -1,6 +1,5 @@
 import React from "react";
 
-import carousel from "../../assets/img/carousel-3.jpeg";
 import { useNavigate } from "react-router-dom";
 
 function DetailsAnnonce({annonce}){

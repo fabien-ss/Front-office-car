@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { API_URL } from "../../constante/constante";
 import { sendDataToApi, sendGetRequest } from "../../fonction/fonction";
 import "./Message.css";
@@ -8,16 +8,18 @@ function Message({props}){
 
     const [message, setMessage] = useState([]);
 
-    async function fetchMessageInner(){
+    const fetchMessageInner = useCallback(async (   ) => {
         const userId = localStorage.getItem("userId");
         const userSenderId = props.idEnvoyeur;
         console.log("sender "+props.idEnvoyeur);
         const url = API_URL + "/message/" + userId + "/" + userSenderId + "/" + props.idAnnonce;
         console.log("url "+url);
         const response = await sendGetRequest(url, {}, "GET");
-        console.log("response "+response.data.recu[0].message);
+        console.log("response "+response.data.recu);
         setMessage(response.data.recu);
-    }
+      }, [idEnvoyeur, idAnnonce]);
+      
+
 
     async function sendMessage(event){
         event.preventDefault();
@@ -36,7 +38,7 @@ function Message({props}){
   
     useEffect(() => {
         fetchMessageInner();
-    }, []);
+    }, [fetchMessageInner]);
 
     return(
         <div class="container ">
