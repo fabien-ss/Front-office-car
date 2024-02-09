@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import carousel from "../../assets/img/carousel-3.jpeg";
 
 function Header(){
+    useEffect(()=>{
+     
+    }, [])
     return (
         <div class="container-fluid header bg-white p-0">
             <div class="row g-0 align-items-center flex-column-reverse flex-md-row">

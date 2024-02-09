@@ -22,10 +22,12 @@ function Notification(){
     async function fetchMessage(){
         const userId = localStorage.getItem("userId");
         console.log("userId ", userId);
-        const url = API_URL + "/message/"+userId;
+        const url = API_URL + "/discussion/"+userId;
         const response = await sendGetRequest(url, {}, "GET");
+       
+        console.log("response ", response);
         try{
-            setMessage(response.data.recu);
+            setMessage(response.data.discussion);
         }catch(Error){
             alert(Error);
         }
@@ -59,16 +61,16 @@ function Notification(){
                         {message?.map(m =>
                             <button class="list-group-item" onClick={e => displayMessage(m)}>
                                 <h3>
-                                    {m.annonceDTO.description}
+                                    {m.nomSender}
                                 </h3>
-                                {m.nomEnvoyeur}
+                                <p>Annonce :</p> {m.idAnnonce}
                             </button>
-                            )}
+                        )}
                     </ul>
                 </div>
                 <div className="col-9">
                     {selected &&
-                        <Message idEnvoyeur={selected.idEnvoyeur} idAnnonce={selected.annonceDTO.idAnnonce}/>
+                        <Message idEnvoyeur={selected.idSender} idAnnonce={selected.idAnnonce}/>
                     }
                 </div>
             </div>

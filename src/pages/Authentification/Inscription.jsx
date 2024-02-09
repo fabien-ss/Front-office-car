@@ -1,4 +1,6 @@
 import React from "react";
+import { signUp } from "../../fonction/authentification";
+
 
 function Inscription(){
 
@@ -14,7 +16,7 @@ function Inscription(){
             sexe: e.target[5].value,
         };
         console.log("data ",data);
-
+        signUp(data.email, data.password);
     }
 
     return(
